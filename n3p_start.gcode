@@ -1,22 +1,5 @@
 ; ELEGOO NEPTUNE 3 Pro
 
-; --- Global Settings ---
-; layer_height = 0.28
-; smooth_spiralized_contours = True
-; magic_mesh_surface_mode = normal
-; machine_extruder_count = 1
-
-; --- Single Extruder Settings ---
-; speed_z_hop = 10
-; retraction_amount = 1
-; retraction_hop = 0.28
-; retraction_hop_enabled = True
-; retraction_enable = True
-; retraction_speed = 45
-; retraction_retract_speed = 45
-; retraction_prime_speed = 45
-; speed_travel = 150
-
 M220 S100                        ; Set the feed speed to 100%
 M221 S100                        ; Set the flow rate to 100%
 M900 K0.04                       ; Set K-factor
@@ -39,6 +22,29 @@ M109 S210                        ; Wait for extruder temperature to reach 210C
 
 ; Make sure the bed is at temperature before continuing
 M190 S60                         ; Wait for bed temperature to reach 60C
+
+
+
+; === Brushing Routine ===
+
+; Move to the brass brush located on the left side of the bed
+G1 X-2 Y-2 F6000                 ; Move to the brass brush
+; Set the brushing speed
+G1 F1000                         ; Set the brushing speed to 1000mm/min
+; Quickly brush back and forth while extruding some filament
+G1 Y2 E1                         ; Extrude 1mm of filament while moving 4mm on Y
+G1 Y-2 E1                        ; Extrude 1mm of filament while moving 4mm on Y
+G1 Y2 E-1.1                      ; Retract 1.1mm of filament while moving 4mm on Y
+G1 Y-2                           ; Move 4mm on Y
+G1 Y2                            ; Move 4mm on Y
+G1 Y-2                           ; Move 4mm on Y
+; Wipe up and away quickly
+G91                              ; Relative positioning
+G1 X5 Y5 Z3 F5000                ; Move to the right and up
+G90                              ; Absolute positioning
+
+; === End of Brushing Routine ===
+
 
 
 ; Home the axes now that the temperatures are stable
